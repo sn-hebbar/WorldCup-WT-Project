@@ -25,7 +25,7 @@ Implemented:
   2.Ajax xhr get, post
   3.Multistage downloading
 
-By,
-  Shankaranarayana Hebbar H S
-  Manoj Kumar
+##By,
+  Shankaranarayana Hebbar H S,
+  Manoj Kumar,
   Siva Teja 
