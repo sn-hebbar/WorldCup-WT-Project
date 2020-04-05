@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+    <meta charset="utf-8">
+    <title></title>
+    <script type="text/javascript" src="localhost_files/angular.js"></script>
+    <link rel="stylesheet" href="localhost_files/bootstrap.css">
+    <link rel="stylesheet" href="localhost_files/back.css">
+    <script type="text/javascript" src="localhost_files/angular-sanitize.js">
+
+    </script>
+    <script type="text/javascript">
+    var app = angular.module('back', []);
+    app.controller('backCtrl',function($scope,$location,$http){
+      $scope.sesEmail="";
+      $scope.FN="";
+      console.log($scope.sesEmail);
+    });
+    </script>
+    
+  <script type="text/javascript">
+      let params = new URLSearchParams(location.search);
+      a=params.get("msg");
+      if(a!=null)
+        alert(a);
+  </script>
+  <style>
+    .card:hover{ -webkit-transform: scale(1.2); }
+    .card{
+      width:13.5rem;height:13rem;
+    }
+    .borderless td, .borderless th {
+    border: none;
+}
+.container-fluid{
+  background-color: rgba(0,0,0,0.5); /* Green background with 30% opacity */
+  color: white;
+}
+  </style>
+  
+  </head>
+  <body>
+    <div class="back ng-scope" ng-app="back" ng-controller="backCtrl"><h1>World Cup<br>Cricket</h1><br>
+      <div class="sub" font="10">
+      <!-- ngIf: sesEmail -->
+      <a href="http://localhost:5678/" class="hover side_button">Home</a>
+      <a href="http://localhost:5678/schedule" class="hover side_button">Schedule</a>
+      <a href="http://localhost:5678/php/1_match.php" class="hover side_button">Book Ticket</a>
+      <a href="http://localhost:5678/questions" class="hover side_button"><b>FAQs</b></a>
+      <!-- ngIf: !sesEmail --><a href="http://localhost:5678/signin" class="hover side_button ng-scope" ng-if="!sesEmail">Login</a><!-- end ngIf: !sesEmail -->
+      <!-- ngIf: !sesEmail --><a href="http://localhost:5678/signup" class="hover side_button ng-scope" ng-if="!sesEmail">Sign up</a><!-- end ngIf: !sesEmail -->
+      <!-- ngIf: sesEmail -->
+      <div class="social">
+      Follow us on:<br>
+      <a href=""><img src="localhost_files/facebook1.png" alt="facebook" class="facebook"></a>
+      <a href=""><img src="localhost_files/pintrest.png" alt="pintrest" class="facebook"></a>
+      <a href=""><img src="localhost_files/twitter1.png" alt="twitter" class="facebook"></a>
+      <a href=""><img src="localhost_files/instagram.png" alt="instagram" class="facebook"></a>
+      </div>
+      </div>
+    </div>
+    <div style="left:500px; top:30px;">
+      
+  <div class="container-fluid">
+    <table class="table borderless">
+      <tbody><tr>
+        <td><div class="card bg-light"><a href="http://localhost:5678/teams/New%20Zealand" class="card-img-top"><img src="localhost_files/newzealand.jpg"><div class="card-body">
+      <h4 class="card-title float-right">New Zealand</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="http://localhost:5678/teams/Australia"><img src="localhost_files/australia.jpg"><div class="card-body">
+      <h4 class="card-title">Australia</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="http://localhost:5678/teams/England"><img src="localhost_files/england.jpg"><div class="card-body">
+      <h4 class="card-title">England</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="http://localhost:5678/teams/South%20Africa"><img src="localhost_files/southafrica.jpg"><div class="card-body">
+      <h4 class="card-title">South Africa</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="http://localhost:5678/teams/India"><img src="localhost_files/india.jpg"></a><div class="card-body"><a href="http://localhost:5678/teams/India">
+      <h4 class="card-title">India</h4></a></div></div></td>
+      </tr>
+      <tr><td colspan="5"></td></tr>
+      <tr><td colspan="5"></td></tr>
+      <tr>
+        <td colspan="5" align="center"><a href="http://localhost:5678/schedule"><img src="localhost_files/trophy.jpg" width="180px"></a></td>
+      </tr>
+      <tr><td colspan="5"></td></tr>
+      <tr><td colspan="5"></td></tr>
+      <tr>
+        <td><div class="card bg-light"><a href="http://localhost:5678/teams/Pakistan"><img src="localhost_files/pakistan.jpg"><div class="card-body">
+      <h4 class="card-title">Pakistan</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="http://localhost:5678/teams/Windies"><img src="localhost_files/westindies.jpg"><div class="card-body">
+      <h4 class="card-title">West Indies</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="http://localhost:5678/teams/Bangladesh"><img src="localhost_files/bangladesh.jpg"><div class="card-body">
+      <h4 class="card-title">Bangladesh</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="http://localhost:5678/teams/Afghanistan"><img src="localhost_files/afghanistan.jpg"><div class="card-body">
+      <h4 class="card-title">Afghanistan</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="http://localhost:5678/teams/Sri%20Lanka"><img src="localhost_files/srilanka.jpg"><div class="card-body">
+      <h4 class="card-title">Sri Lanka</h4></div></a></div></td>
+      </tr>
+    </tbody></table>
+  </div>
+
+  
+    </div>
+  
+</body></html>

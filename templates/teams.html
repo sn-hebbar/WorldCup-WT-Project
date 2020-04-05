@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Teams {% endblock %}
+{% block head %}
+    <style media="screen">
+    .selected{
+      background-color: #0000cc;
+    }
+    table{
+      color:white;
+    }
+    </style>
+    <script type="text/javascript">
+    var app1 = angular.module('teams', []);
+    app1.controller('teamsCtrl',function($scope,$http,$window){
+      $scope.get=function(para){
+        $scope.parameter=para
+        $http.get("?wanted="+para)
+        .then(function(response){
+        $scope.data=response.data;
+          })
+        }
+        $scope.ticket=function(no){
+          console.log(no);
+          $window.location.href='/ticket/'+no;
+        }
+     });
+     angular.element(document).ready(function() {
+    angular.bootstrap(document.getElementById("App1"), ['teams']);});
+    </script>
+{% endblock %}
+{% block body %}
+  <div  id="App1" ng-app="teams" ng-controller="teamsCtrl" ng-init="get('schedule')">
+    <div class="container-fluid">
+    <table class="table">
+      <thead class="bg-primary">
+        <th ng-click="get('schedule')" ng-class="{selected: parameter=='schedule'}"><a href="#shedule" style="color:white;text-decoration:none;">Shedule</a></th>
+        <th ng-click="get('players')" ng-class="{selected: parameter=='players'}"><a href="#players" style="color:white;text-decoration:none;">Players</a></th>
+        <th ng-click="get('board')" ng-class="{selected: parameter=='board'}"><a href="#board" style="color:white;text-decoration:none;">Board</a></th>
+        <th ng-click="get('country')" ng-class="{selected: parameter=='country'}"><a href="#country" style="color:white;text-decoration:none;">Country</a></th>
+      </thead>
+    </table>
+      {% raw %}
+      <table class="table" ng-if="parameter=='schedule'" id="schedule">
+        <tr class="thead-dark">
+          <th>Match no.</th><th>Team A</th><th>Teeam B</th><th>Date</th><th>Time</th><th>Venue</th><th>Ticket booking</th>
+        </tr>
+            <tr ng-repeat="i in data">
+              <td ng-repeat="j in i track by $index" ng-if="$index<5">{{j}}</td>
+              <td>{{i[5]}},{{i[6]}}</td><td class="btn-primary" style="color:white;" ng-click="ticket(i[0]);">Book</td>
+            </tr>
+      </table>
+
+      <table class="table" ng-if="parameter=='players'" id="schedule">
+        <tr class="thead-dark">
+          <th>Name</th><th>Specification</th><th>Matches</th><th>Innings</th><th>Total Score</th><th>Heighest Score</th>
+          <th>Average</th><th>Total Wicket</th><th>Best Bowling Figure</th>
+        </tr>
+            <tr ng-repeat="i in data">
+              <td>{{i[1]}},{{i[2]}}</td>
+              <td ng-repeat="j in i track by $index" ng-if="$index>2 && $index<11">{{j}}</td>
+            </tr>
+      </table>
+
+      <table class="table" ng-if="parameter=='board'" ng-repeat="i in data" >
+            <tr><th class="table-dark col-3">Name</th><td class="col-9">{{i[0]}}</td></tr>
+            <tr><th class="table-dark col-3">President</th><td class="col-9">{{i[1]}}</td></tr>
+            <tr><th class="table-dark col-3">Secretary</th><td class="col-9">{{i[2]}}</td></tr>
+            <tr><th class="table-dark col-3">No. of World Cups</th><td class="col-9">{{i[3]}}</td></tr>
+      </table>
+
+      <table class="table" ng-if="parameter=='country'" ng-repeat="i in data" >
+            <tr><th class="table-dark col-3">Sponsor</th><td class="col-9">{{i[1]}}</td></tr>
+            <tr><th class="table-dark col-3">Jersy Colour</th><td class="col-9">{{i[2]}}</td></tr>
+            <tr><th class="table-dark col-3">Ranking</th><td class="col-9">{{i[3]}}</td></tr>
+            <tr><th class="table-dark col-3">Group</th><td class="col-9">{{i[4]}}</td></tr>
+      </table>
+
+      {% endraw %}
+
+    </div>
+  </div>
+{% endblock %}

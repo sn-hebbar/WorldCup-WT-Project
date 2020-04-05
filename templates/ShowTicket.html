@@ -1,0 +1,36 @@
+<br><br>
+<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+  <table class="table table-dark">
+    <tr>
+      <th scope="col" colspan="2"><h3>Match no.: {{data['match'][0][0]}}</h3></th>
+      <th scope="col" colspan="2"><h3>{{data['match'][0][1]}} vs {{data['match'][0][2]}}</h3></th>
+    </tr>
+    <tr>
+      <td>Date: {{data['match'][0][3]}}</td>
+      <td>Time: {{data['match'][0][4]}}</td>
+      <td colspan="2">Venue: {{data['match'][0][5]}},{{data['match'][0][6]}}</td>
+      <td></td>
+    </tr>
+      <tr>
+        <td scope="col">Ticket No.: {{data['ticket'][0][0]}}</td>
+        <td scope="col">Email: {{data['by'][0][0]}}</td>
+        <td scope="col">Phone: {{data['by'][0][4]}}</td>
+        <td scope="col">Section: {{data['ticket'][0][4]}}</td>
+        <td scope="col">No. of People: {{data['ticket'][0][3]}}</td>
+      </tr>
+      {% for i in data['peoples']%}
+      <tr>
+        <td>{{i[0]}} {{i[1]}}</td>
+        <td>{{i[2]}}</td>
+        <td>Age: {{i[3]}}</td>
+        <td></td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td>Amount: {{data['ticket'][0][5]}}</td>
+        <td></td>
+        <td colspan="2">*Including GST</td>
+      </tr>
+    </table>
+    <a href="/cancel/{{data['ticket'][0][0]}}" class="btn btn-danger" role="button">Cancel ticket</a>
+  </div>

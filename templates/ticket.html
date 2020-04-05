@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block head %}
+<script type="text/javascript">
+  var app1 = angular.module('ticket', []);
+  app1.controller('ticketCtrl',function($scope,$http,$window){
+    $scope.sesEmail="{{session['emailId']}}";
+    if(!$scope.sesEmail){
+      $window.location.href='/signin';
+    }
+    $scope.range=function(n){
+      if(n!=null){n=parseInt(n);
+      console.log(n);
+      return new Array(n);}
+    }
+  });
+  angular.element(document).ready(function() {
+ angular.bootstrap(document.getElementById("App1"), ['ticket']);});
+</script>
+{% endblock %}
+{% block body %}
+  <div class="container">
+      <h1 class="display-2 text-center">{{data[1]}} vs {{data[2]}}</h1>
+      <h2 class="display-4 text-center">Match no.:{{data[0]}}</h2>
+      <p class="text-center">Date: {{data[3]}}</p>
+      <p class="text-center">Time: {{data[4]}}</p>
+      <p class="text-center">Venue: {{data[5]}},{{data[6]}}</p>
+  </div>
+  <div id="App1" ng-app="ticket" ng-controller="ticketCtrl">
+    <form class="" action="/ticket/{{data[0]}}" method="post">
+      <div class="container">
+        <br>
+        <label>Select Area:</label> <select class="form-control-sm" name="area">
+            <option value="A">A BLOCK  Rs.3999</option>
+            <option value="B">B BLOCK  Rs.2999</option>
+            <option value="C">C BLOCK  Rs.1999</option>
+          </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <label>No.of people:</label> <select class="form-control-sm" id="number" name="number" ng-model="model.id" convert-to-number>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+          </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <br><br>
+
+      </div>
+      <br>
+      <div class="container">
+        <div ng-repeat="x in range(model.id) track by $index">
+          {%raw%}{{$index+1}}<br>
+          <label for="FN">First Name:</label><input type="text" id="FN" name="FN{{$index}}" class="form-control" ng-model="FN" required><br>
+          <label for="LN">Last Name:</label><input type="text" id="LN" name="LN{{$index}}" class="form-control" ng-model="LN" required><br>
+          <label for="gender">Gender:</label>
+          <label class="radio-inline"><input type="radio" name="gender{{$index}}" value="male" required>Male</label>&nbsp;
+          <label class="radio-inline"><input type="radio" name="gender{{$index}}" value="female">Female</label>&nbsp;
+          <label class="radio-inline"><input type="radio" name="gender{{$index}}" value="other">Other</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <label for="age">Age: </label> <input type="number" name="age{{$index}}" class="form-control-sm" ng-model="age" required>
+          <br>
+        </div><br>
+        <input type="submit" class="btn btn-primary float-right" value="Submit" ng-if="model.id!=null"><br ng-if="model.id!=null"><br ng-if="model.id!=null">
+
+        <p>*A block-back</p>
+        <p>*B block-middle</p>
+        <p>*C block-front</p>
+        {%endraw%}
+      </div>
+
+      <br>
+
+    </form>
+  </div>
+{% endblock %}

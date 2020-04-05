@@ -1,0 +1,27 @@
+create table signup
+( email varchar(50) unique,
+  fname varchar(50),
+  lname varchar(50),
+  password varchar(50),
+  phone varchar(50),
+  gender varchar(10));
+  
+create table ticket
+( number integer auto increment primary key,
+  match integer,
+  email varchar(50),
+  peoples integer,
+  block varchar,
+  foreign key(email) references signup(email),
+  foreign key(match) references matches(match_no)
+);
+
+create table peoples
+( FN varchar,
+  LN varchar,
+  gender varchar,
+  age integer,
+  ticket integer,
+  foreign key(ticket) references ticket(number),
+  primary key(FN,LN,ticket)
+);

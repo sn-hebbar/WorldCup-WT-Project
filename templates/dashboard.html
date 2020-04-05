@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% block head %}
+<style>
+input.ng-invalid {
+  background-color:pink;
+}
+input.ng-valid {
+  background-color:lightgreen;
+}
+.ticket{
+  background-color: rgba(0,0,0,0); /* Green background with 30% opacity */
+  color: white;
+}
+</style>
+<script type="text/javascript">
+  var app1 = angular.module('dashboard', ['ngSanitize']);
+  app1.controller('dashboardCtrl',function($scope,$http,$window,$interval,$timeout){
+    $scope.nedit=true;
+    $scope.npedit=true;
+    $scope.tick=""
+    $scope.reload=function(){
+      $window.location.reload();
+    }
+    $scope.formLoad=function(){
+      $http.get('?wanted=form')
+      .then(function(response){
+        $scope.formData=response.data;
+        console.log($scope.formData)
+        $scope.FN=$scope.formData[1];
+        $scope.LN=$scope.formData[2];
+        $scope.nphone=$scope.formData[4];
+      })
+      }
+      $scope.submitForm=function(){
+        var frm=new Object();
+        frm["FN"]=myForm.FN.value
+        frm["LN"]=myForm.LN.value
+        frm["phone"]=myForm.phone.value
+        frm["gender"]=myForm.gender.value
+        console.log(frm["FN"]);
+        $http.post('/dashboard',frm).then(function(response){
+          $scope.formData=response.data;
+          $scope.nedit=true;
+        })
+      }
+    $scope.passSubimt=function() {
+      frm={'old':pasForm.password0.value,'new':pasForm.password.value}
+      $http.post('/editPassword',frm)
+      .then(function(response){
+        alert("Password Changed");
+        $scope.npedit=true;
+      },function(){
+        alert("Wrong Password");
+        $scope.npedit=true;
+      })
+    }
+    $scope.tickets={{data['ticket_no']}}
+    $scope.len=$scope.tickets.length;
+    function call(){
+        if($scope.len>0){
+          $http.get('/showTicket/'+($scope.tickets[$scope.len-1]).toString())
+          .then(function(response){
+            $scope.len=$scope.len-1;
+            $scope.tick+=response.data;
+            $timeout(call,1000)
+        }
+        )
+    }
+  }
+  $timeout(call(),1000);
+  });
+  app1.directive('phoneDirective', function() {
+    return {
+      require: 'ngModel',
+        link: function(scope, element, attr, mCtrl) {
+          function myValidation(value){
+            if(value.length==10 && /\d{10}/g.exec(value)){
+               mCtrl.$setValidity('phone',true);
+            }
+            else{
+               mCtrl.$setValidity('phone',false);
+            }
+            return value;
+          }
+          mCtrl.$parsers.push(myValidation);
+        }
+  };
+});
+app1.directive('passwordDirective', function() {
+  return {
+    require: 'ngModel',
+      link: function(scope, element, attr, mCtrl) {
+        function myValidation(value){
+          console.log(pasForm.password.value)
+          if(value==pasForm.password.value){
+             mCtrl.$setValidity('passw',true);
+          }
+          else{
+             mCtrl.$setValidity('passw',false);
+          }
+          return value;
+        }
+        mCtrl.$parsers.push(myValidation);
+      }
+};
+});
+  angular.element(document).ready(function() {
+ angular.bootstrap(document.getElementById("App1"), ['dashboard']);});
+</script>
+{% endblock %}
+{% block body %}
+<div ng-app="dashboard" id="App1" ng-controller="dashboardCtrl">
+  <div class="container">
+    <br>
+    <a href="/signout"><button type="button" name="button" class="btn btn-primary float-right">Signout</button></a>
+    <h1>Dashboard</h1>
+    {% raw %}
+    <form method="POST" name="myForm" ng-init="formLoad()">
+        <label for="emailId">Email Id:</label><input type="email" id="emailId" name="emailId" class="form-control" ng-value="formData[0]" ng-readonly="true" ng-model="emailId" required><br>
+        <label for="FN">First Name:</label><input type="text" id="FN" name="FN" class="form-control" ng-readonly="nedit" ng-value="formData[1]" ng-model="FN" required><br>
+        <label for="LN">Last Name:</label><input type="text" id="LN" name="LN" class="form-control" ng-model="LN" ng-value="formData[2]" ng-readonly="nedit" required><br>
+        <label for="phone">Phone No.:</label><input type="text" id="phone" name="phone" class="form-control" ng-model="nphone" ng-readonly="nedit" ng-value="formData[4]" required phone-directive><br>
+        <label for="gender">Gender:</label><br>
+        <label class="radio-inline"><input type="radio" name="gender" value="male" ng-readonly="nedit" ng-checked="formData[5]=='male'">Male</label>&nbsp;
+        <label class="radio-inline"><input type="radio" name="gender" ng-readonly="nedit" value="female" ng-checked="formData[5]=='female'">Female</label>&nbsp;
+        <label class="radio-inline"><input type="radio" name="gender" ng-readonly="nedit" value="other" ng-checked="formData[5]=='other'">Other</label>&nbsp;<br>
+        <input type="submit" class="btn btn-primary float-right"" value="Submit" ng-disabled="myForm.phone.$invalid || myForm.password1.$invalid" ng-show="!nedit" ng-click="submitForm()">
+    </form>
+    <button type="button" name="button" class="btn btn-primary" ng-click="nedit=!nedit" ng-show="nedit">Edit</button>
+    <form name="pasForm" method="post">
+      <label for="password0" ng-show="!npedit">Old Password:</label><input type="password" id="password0" name="password0" class="form-control" ng-model="password0" ng-show="!npedit" password0-directive required><br>
+      <label for="password1" ng-show="!npedit">New:</label><input type="password" id="password" name="password" class="form-control" ng-model="password" ng-show="!npedit" required><br>
+      <label for="password2" ng-show="!npedit">Retype Password:</label><input type="password" id="password1" name="password1" class="form-control" ng-model="password1" ng-show="!npedit" password-directive required><br>
+      <input type="submit" class="btn btn-primary float-right"" value="Submit" ng-disabled="pasForm.password1.$invalid" ng-show="!npedit" ng-click="passSubimt()">
+    </form>
+{% endraw %}
+  <br>
+  <button type="button" name="button" class="btn btn-primary" ng-click="npedit=!npedit" ng-show="npedit">Edit password</button>
+  <button type="button" name="button" class="btn btn-primary" ng-click="reload()" ng-show="!nedit || !npedit">Reload</button>
+  <br><br>
+  </div>
+  <br><br>
+ <div class="container ticket" id="ticket" ng-bind-html="tick">
+ </div>
+</div>
+{% endblock %}

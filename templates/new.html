@@ -1,0 +1,62 @@
+{% extends 'base.html'%}
+{% block head %}
+  <script type="text/javascript">
+      let params = new URLSearchParams(location.search);
+      a=params.get("msg");
+      if(a!=null)
+        alert(a);
+  </script>
+  <style>
+    .card:hover{ -webkit-transform: scale(1.2); }
+    .card{
+      width:13.5rem;height:13rem;
+    }
+    .borderless td, .borderless th {
+    border: none;
+}
+.container-fluid{
+  background-color: rgba(0,0,0,0.5); /* Green background with 30% opacity */
+  color: white;
+}
+
+a{text-decoration:none !important}
+  </style>
+  {% endblock %}
+{% block body %}
+  <div class="container-fluid">
+    <table class="table borderless">
+      <tr>
+        <td><div class="card bg-light"><a href="teams/New Zealand" class="card-img-top "><img src="{{url_for('static',filename='media/teams/newzealand.jpg')}}"><div class="card-body">
+      <h4 class="card-title text-center">New Zealand</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="teams/Australia"><img src="{{url_for('static',filename='media/teams/australia.jpg')}}"><div class="card-body">
+      <h4 class="card-title text-center">Australia</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="teams/England"><img src="{{url_for('static',filename='media/teams/england.jpg')}}"><div class="card-body">
+      <h4 class="card-title text-center">England</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="teams/South Africa"><img src="{{url_for('static',filename='media/teams/southafrica.jpg')}}"><div class="card-body">
+      <h4 class="card-title text-center">South Africa</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="teams/India"><img src="{{url_for('static',filename='media/teams/india.jpg')}}"><div class="card-body">
+      <h4 class="card-title text-center">India</h4></a></div></div></td>
+      </tr>
+      <tr><td colspan="5"></td></tr>
+      <tr><td colspan="5"></td></tr>
+      <tr>
+        <td colspan="5" align="center"><a href="/schedule"><img src="{{url_for('static',filename='media/trophy.jpg')}}" width="180px"></a></td>
+      </tr>
+      <tr><td colspan="5"></td></tr>
+      <tr><td colspan="5"></td></tr>
+      <tr>
+        <td><div class="card bg-light"><a href="teams/Pakistan"><img src="{{url_for('static',filename='media/teams/pakistan.jpg')}}"><div class="card-body">
+      <h4 class="card-title text-center">Pakistan</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="teams/Windies"><img src="{{url_for('static',filename='media/teams/westindies.jpg')}}"><div class="card-body">
+      <h4 class="card-title text-center">West Indies</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="teams/Bangladesh"><img src="{{url_for('static',filename='media/teams/bangladesh.jpg')}}"><div class="card-body">
+      <h4 class="card-title text-center">Bangladesh</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="teams/Afghanistan"><img src="{{url_for('static',filename='media/teams/afghanistan.jpg')}}"><div class="card-body">
+      <h4 class="card-title text-center">Afghanistan</h4></div></a></div></td>
+        <td><div class="card bg-light"><a href="teams/Sri Lanka"><img src="{{url_for('static',filename='media/teams/srilanka.jpg')}}"><div class="card-body">
+      <h4 class="card-title text-center">Sri Lanka</h4></div></a></div></td>
+      </tr>
+    </table>
+  </div>
+
+  {% endblock %}

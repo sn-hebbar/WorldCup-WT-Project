@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block head %}
+<script type="text/javascript">
+  var app1 = angular.module('ticket', ['ngSanitize']);
+  app1.controller('ticketCtrl',function($scope,$http){
+    $http.get("/showTicket/{{ticket_no}}")
+    .then(function(response){
+      $scope.data=response.data;
+    })
+  });
+  angular.element(document).ready(function() {
+  angular.bootstrap(document.getElementById("ticket"), ['ticket']);});
+</script>
+<style>
+  .container{
+    background-color: rgba(0,0,0,0); /* Green background with 30% opacity */
+    color: white;
+  }
+</style>
+
+{% endblock %}
+{% block body %}
+  <div class="container" id="ticket" ng-app="ticket" ng-controller="ticketCtrl">
+    <div ng-bind-html="data"></div>
+
+  </div>
+{% endblock %}

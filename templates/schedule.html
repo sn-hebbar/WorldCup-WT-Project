@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+  {% block title %}Schedule{% endblock %}
+  {% block head%}
+  <script type="text/javascript">
+    var app1=angular.module('schedule',[]);
+    app1.controller('scheduleController',function($scope,$location,$window){
+      $scope.ticket=function(no){
+        $window.location.href='/ticket/'+no;
+      }
+    });
+    angular.element(document).ready(function() {
+   angular.bootstrap(document.getElementById("App1"), ['schedule']);});
+  </script>
+
+  {% endblock %}
+  {% block body %}
+    <div class="container-fluid" ng-app="schedule" ng-controller="scheduleController" id="App1">
+      <table class="table" style="{color:white};">
+        <tr class="thead-dark">
+          <th>Match No.</th><th>Team A</th><th>Team B</th><th>Date</th><th>Time</th><th>Venue</th><th>Ticket Book</th></tr>
+        {%for i in data%}
+          <tr><td>{{i[0]}}</td><td>{{i[1]}}</td><td>{{i[2]}}</td><td>{{i[3]}}</td><td>{{i[4]}}</td><td>{{i[5]}},{{i[6]}}</td>
+          <td class="btn-primary" style="color:white;" ng-click="ticket({{i[0]}});">Book</td></tr>
+        {%endfor%}
+      </table>
+    </div>
+
+  {% endblock %}

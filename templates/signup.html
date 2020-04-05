@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title%} SignUp {% endblock %}
+{% block head %}
+<style>
+input.ng-invalid {
+  background-color:pink;
+}
+input.ng-valid {
+  background-color:lightgreen;
+}
+</style>
+<script type="text/javascript">
+  var app1 = angular.module('signup', []);
+  app1.directive('phoneDirective', function() {
+    return {
+      require: 'ngModel',
+        link: function(scope, element, attr, mCtrl) {
+          function myValidation(value){
+            if(value.length==10 && /\d{10}/g.exec(value)){
+               mCtrl.$setValidity('phone',true);
+            }
+            else{
+               mCtrl.$setValidity('phone',false);
+            }
+            return value;
+          }
+          mCtrl.$parsers.push(myValidation);
+        }
+  };
+});
+app1.directive('passwordDirective', function() {
+  return {
+    require: 'ngModel',
+      link: function(scope, element, attr, mCtrl) {
+        function myValidation(value){
+          console.log(myForm.password.value)
+          if(value==myForm.password.value){
+             mCtrl.$setValidity('passw',true);
+          }
+          else{
+             mCtrl.$setValidity('passw',false);
+          }
+          return value;
+        }
+        mCtrl.$parsers.push(myValidation);
+      }
+};
+});
+ angular.element(document).ready(function() {
+angular.bootstrap(document.getElementById("App1"), ['signup']);});
+</script>
+{% endblock %}
+{% block body %}
+<div ng-app="signup" id="App1">
+  <div class="container">
+    <h1>Sign Up</h1>
+    <h3 style="color:red;">{{data}}</h3>
+    <form action="/signup" method="POST" name="myForm">
+        <label for="emailId">Email Id:</label><input type="email" id="emailId" name="emailId" class="form-control" ng-model="emailId" required><br>
+        <label for="FN">First Name:</label><input type="text" id="FN" name="FN" class="form-control" ng-model="FN" required><br>
+        <label for="LN">Last Name:</label><input type="text" id="LN" name="LN" class="form-control" ng-model="LN" required><br>
+        <label for="phone">Phone No.:</label><input type="text" id="phone" name="phone" class="form-control" ng-model="phone" required phone-directive><br>
+        <label for="gender">Gender:</label><br>
+        <label class="radio-inline"><input type="radio" name="gender" value="male" checked>Male</label>&nbsp;
+        <label class="radio-inline"><input type="radio" name="gender" value="female">Female</label>&nbsp;
+        <label class="radio-inline"><input type="radio" name="gender" value="other">Other</label>&nbsp;<br>
+        <label for="password1">Password:</label><input type="password" id="password" name="password" class="form-control" ng-model="password" required><br>
+        <label for="password2">Retype Password:</label><input type="password" id="password1" name="password1" class="form-control" ng-model="password1" password-directive required><br>
+        <input type="submit" class="btn btn-primary" value="Submit" ng-disabled="myForm.phone.$invalid || myForm.password1.$invalid">
+    </form>
+    <br>
+  </div>
+</div>
+{% endblock %}

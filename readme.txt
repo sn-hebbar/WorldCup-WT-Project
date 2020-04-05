@@ -1,6 +1,3 @@
-# WorldCup-WT-Project
-WT2 Project 2020
-
 To Run:
   1.Start environment
   2.Run: python3 views.py

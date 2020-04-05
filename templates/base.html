@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>{%block title%}{%endblock%}</title>
+    <script type="text/javascript" src="{{url_for('static',filename='js/angular.min.js')}}"></script>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href='{{url_for('static',filename='css/back.css')}}'>
+    <script type="text/javascript" src="{{url_for('static',filename='js/angular-sanitize.js')}}">
+
+    </script>
+    <script type="text/javascript">
+    var app = angular.module('back', []);
+    app.controller('backCtrl',function($scope,$location,$http){
+      $scope.sesEmail="{{session['emailId']}}";
+      $scope.FN="{{session['FN']}}";
+      console.log($scope.sesEmail);
+    });
+    </script>
+    {%block head%}{%endblock%}
+  </head>
+  <body>
+    <div class="back" ng-app="back" ng-controller="backCtrl"><h1>World Cup<br>Cricket</h1><br>
+      <div class="sub" font="10">
+      {%raw%}<div ng-if="sesEmail">Hi,{{FN}}</div>{%endraw%}
+      <a href="/" class="hover side_button">Home</a>
+      <a href="/schedule" class="hover side_button">Schedule <br>/Book Ticket</a>
+      <a href="/signin" class="hover side_button" ng-if="!sesEmail">Login</a>
+      <a href="/signup" class="hover side_button" ng-if="!sesEmail">Sign up</a>
+      <a href="/dashboard" class="hover side_button" ng-if="sesEmail">Dashboard</a>
+      <div class="social">
+      Follow us on:<br>
+      <a href=""><img src="{{url_for('static',filename='media/facebook(1).png')}}" alt="facebook" class="facebook"></a>
+      <a href=""><img src="{{url_for('static',filename='media/pintrest.png')}}" alt="pintrest" class="facebook"></a>
+      <a href=""><img src="{{url_for('static',filename='media/twitter(1).png')}}" alt="twitter" class="facebook"></a>
+      <a href=""><img src="{{url_for('static',filename='media/instagram.png')}}" alt="instagram" class="facebook"></a>
+      </div>
+      </div>
+    </div>
+    <div style="left:500px; top:30px;">
+      {%block body%}{%endblock%}
+    </div>
+  </body>
+</html>

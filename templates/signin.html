@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title%} SignUp {% endblock %}
+{% block head %}
+<style>
+  .container{
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+  }
+  input.ng-invalid {
+    background-color:pink;
+  }
+</style>
+
+{% endblock %}
+{% block body %}
+<div class="container">
+  <h2>Signin</h2>
+  <h3 style="color:red;">{{data}}</h3>
+    <form action="/signin" method="post">
+      <label for="emailId">Email Id:</label><input type="email" id="emailId" name="emailId" class="form-control" ng-model="emailId" required><br>
+      <label for="password1">Password:</label><input type="password" id="password" name="password" class="form-control" ng-model="password" required><br>
+      <input type="submit" class="btn btn-primary" value="Signin">
+      <br><br>
+    </form>
+</div>
+
+{% endblock %}
