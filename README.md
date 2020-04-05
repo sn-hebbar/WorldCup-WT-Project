@@ -27,5 +27,5 @@ Implemented:
 
 #### By,
   ###### Shankaranarayana Hebbar H S,
-  ###### Manoj Kumar,
-  ###### Siva Teja 
+  ###### Manojkumar S,
+  ###### Siva Teja S
