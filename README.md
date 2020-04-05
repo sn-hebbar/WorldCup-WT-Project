@@ -1,4 +1,4 @@
-# WorldCup-WT-Project
+# Cricket WorldCup-WT-Project
 WT2 Project 2020
 
 To Run:
