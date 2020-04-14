@@ -1,0 +1,88 @@
+//Live code sample
+
+
+<!DOCTYPE html>
+
+<html>
+
+
+<head>
+
+  <meta charset="utf-8" />
+
+  <title>auto refresh div in angularjs</title>
+
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+  <script type="text/javascript">
+
+    var app = angular.module('autoRefreshApp', []);
+
+
+    app.controller('autoRefreshController', function($scope, $interval) {
+
+
+      var count = 0;// this is default cont value.
+
+       
+
+      $scope.displayMsg = "This is auto Refreshed " + count + " counter time.";
+
+
+      // The  $interval function is used to auto refresh the count div.
+
+      var auto = $interval(function() {
+
+        $scope.displayMsg = "This is auto Refreshed " + count + " counter time.";
+
+        count++;
+
+      },1000);
+
+
+      //This is use the custon method are used to stopTimer the timer when click on stop button.
+
+      $scope.stopTimer = function() {
+
+        if (angular.isDefined(auto)) {
+
+          $interval.cancel(auto);
+
+          auto = 0;
+
+        }
+
+      };
+
+    });
+
+  </script>
+
+</head>
+
+
+<body ng-app="autoRefreshApp">
+
+  <div ng-controller="autoRefreshController">
+
+    <div>
+
+      <input type="button" ng-click="stopTimer()" value="Stop Count">
+
+    </div>
+
+    <div style="color:green;">
+      {%raw%}
+      {{displayMsg}}
+      {%endraw%}
+
+    </div>
+
+  </div>
+
+</body>
+
+
+</html>

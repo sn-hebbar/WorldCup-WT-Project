@@ -131,7 +131,7 @@ app1.directive('passwordDirective', function() {
       <label for="password0" ng-show="!npedit">Old Password:</label><input type="password" id="password0" name="password0" class="form-control" ng-model="password0" ng-show="!npedit" password0-directive required><br>
       <label for="password1" ng-show="!npedit">New:</label><input type="password" id="password" name="password" class="form-control" ng-model="password" ng-show="!npedit" required><br>
       <label for="password2" ng-show="!npedit">Retype Password:</label><input type="password" id="password1" name="password1" class="form-control" ng-model="password1" ng-show="!npedit" password-directive required><br>
-      <input type="submit" class="btn btn-primary float-right"" value="Submit" ng-disabled="pasForm.password1.$invalid" ng-show="!npedit" ng-click="passSubimt()">
+      <input type="submit" class="btn btn-primary float-right" value="Submit" ng-disabled="pasForm.password1.$invalid" ng-show="!npedit" ng-click="passSubimt()">
     </form>
 {% endraw %}
   <br>

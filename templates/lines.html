@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block body %}
+	{% for d in data %}
+		<a href="/lines/d['file']">{{d['teams']}},{{d['date']}}</a><br>
+	{% endfor %}
+{% endblock %}

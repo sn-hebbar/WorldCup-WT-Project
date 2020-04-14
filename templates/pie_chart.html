@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Pie Chart{% endblock %}
+{% block head %}
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+{% endblock %}
+
+
+
+{% block body %}
+<div class="container text-center">
+  <br><br>
+  <h1>No. of matches India played in last 10 years</h1>
+    <canvas id="chart" width="600" height="400"></canvas><br>
+    India played highest matches against Australia and Srilanka 78 matches, least with Afghan
+  <br><br>
+  <h1>No. of matches India won last 10 years</h1>
+    <canvas id="chart1" width="600" height="400"></canvas><br>
+    India won highest matches against Afghanistan 100%, least against Australia 0.48%
+</div>
+    
+ <script>
+      var pieData = [
+        {% for item, label, colors in set %}
+          {
+            value: {{item}},
+            label: "{{label}}",
+            color : "{{colors}}"
+          },
+        {% endfor %}
+      ];
+
+      // draw pie chart
+      new Chart(document.getElementById("chart1").getContext("2d")).Pie(pieData);
+      var pieData1 = [
+        {% for item, label, colors in set1 %}
+          {
+            value: {{item}},
+            label: "{{label}}",
+            color : "{{colors}}"
+          },
+        {% endfor %}
+      ];
+      new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData1);
+    </script>
+{% endblock %}

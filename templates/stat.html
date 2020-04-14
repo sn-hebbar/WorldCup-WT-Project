@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block head%}
+<style>
+* {
+  box-sizing: border-box;
+}
+
+
+.column {
+  float: left;
+  width: 33.3%;
+  padding: 10px;
+  height: 300px;
+}
+
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+{% endblock %}
+{% block body %}
+<br><br>
+<div class="container"><br>
+  <h2>Statistics</h2>
+<p> Statistics are recorded for every match and aggreagted over the career, at the professional level 
+statistics play an very important role.</p>
+<p>this statistics helps to draw some conclusion about an cricketer at the professional level</p>
+<p>statistics include important features like batting statistics, bowling statistics, overall batting average, most runs in an innings etc. 
+below are some of the statistics made for better understanding of the user </p>
+
+
+
+
+
+<div class="row">
+  <div class="column" style="background-color:#aaa;">
+  <a style = "color : #000; text-decoration : none"  href = '/bar' >    
+  <h2>Bar Graph</h2>
+    <p>This Bar graph depicts top 5 average batsman in one day international of team India</p>
+  </a>
+  </div>
+  <div class="column" style="background-color:#ccc;">
+	<a style = "color : #000; text-decoration : none"  href = '/pie' >
+    <h2>Pie chart</h2>
+    <p>This pie chart shows  how much percentage of matches india won against other countries </p>
+	</a>
+  </div>
+  <div class="column" style="background-color:#ddd;">
+	<a style = "color : #000; text-decoration : none"  href = '/line_chart' >    
+	<h2> Multi Series Line chart </h2>
+    <p> This Multi Series line chart depicts the scores of a match in both the innings </p>
+	</a>
+  </div>
+</div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,88 @@
+
+{% extends 'base.html' %}
+{% block title %}Live Score{% endblock %}
+{% block head %}
+    <style media="screen">
+    .selected{
+      background-color: #0000cc;
+    }
+    table{
+      color:white;
+    }
+    .div1 {
+  border-radius: 15px 50px 30px;
+  background: #73AD21;
+  padding: 20px; 
+  width: 200px;
+  height: 50px; 
+}
+.div2 {
+  float: right;
+  border-radius: 15px 50px 30px;
+  background: #73AD21;
+  padding: 20px; 
+  width: 200px;
+  height: 50px; 
+}
+    </style>
+
+  <script type="text/javascript">
+
+    var app1 = angular.module('livescore', []);
+
+
+    app1.controller('autoRefreshController', function($scope,$http, $timeout) {
+      /*function call(){
+        $http.get('/livescores').then(function(response){
+          $scope.disp=response.data;
+          $timeout(call,1000)
+        })
+      }*/
+    $scope.initial=function(){
+      $http.get('/livescores').then(function(response){
+        $scope.ind=response.data;
+        $timeout(getscore,1000)
+      })
+    }
+    function getscore(){
+      $http.get('/livescores').then(function(response){
+          $scope.disp=response.data;
+          $timeout(call,1000)
+    }
+    )
+  }
+  function call(){
+    $http.get('/livescores').then(function(response){
+          $scope.disp=response.data;
+          if(response.data[7]==0){
+            $timeout(finale,1000)
+          }
+          else{
+          $timeout(call,1000)
+        }
+  })}
+    function finale(){
+      $http.get('/livescores').then(function(response){
+        $scope.atd=response.data;
+      })
+    }
+  });
+  angular.element(document).ready(function() {
+  angular.bootstrap(document.getElementById("App1"), ['livescore']);
+  });
+
+  </script>
+{% endblock %}
+{% block body %}
+  <div id="App1" ng-app="autoRefreshApp" ng-controller="autoRefreshController" ng-init="initial()">
+    {%raw%}
+    <h4>{{ind}}</h4>
+    {%endraw%}
+    {%raw%}
+    <h4>{{disp}}</h4>
+    {%endraw%}
+      {%raw%}
+      <h4>{{atd}}</h4>
+      {%endraw%}
+</div>
+{% endblock %}

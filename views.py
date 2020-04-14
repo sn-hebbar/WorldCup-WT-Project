@@ -3,11 +3,18 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import sqlite3
 import random
-
+import yaml
+import glob
+from math import ceil,floor
+import pprint
 app=Flask(__name__)
 app.secret_key = "abc"
 conn = sqlite3.connect('cricket.db')
-
+count=0
+a=list()
+initial=list()
+final=list()
+park=0
 @app.route('/')
 def front():
     return render_template('new.html')
@@ -41,7 +48,7 @@ def teams(team):
         c=list(map(lambda x:list(x),c))
         print(c)
         return jsonify(c)
-    return render_template("teams.html")
+    return render_template("teams.html",team=team)
 @app.route('/schedule')
 def schedule():
     conn = sqlite3.connect('cricket.db')
@@ -63,7 +70,7 @@ def signup():
             conn.commit()
             return redirect('/signin')
         except:
-            return render_template('signup.html',data="Username Already Exists")
+            return render_template('signup.html',data="Email Id Already Exists")
 
 @app.route('/signin',methods=["GET","POST"])
 def signin():
@@ -188,5 +195,175 @@ def dashoardForm():
     else:
         abort(400)
 
+@app.route('/live',methods=["GET"])
+def live():
+    wick=0
+    global count
+    global initial
+    global final
+    global a
+    with open('static/data/1001349.yaml') as file:
+    # The FullLoader parameter handles the conversion from YAML
+    # scalar values to Python the dictionary format
+        fruits_list = yaml.load(file, Loader=yaml.FullLoader)
+        det1=fruits_list['info']
+        dat1=det1['dates'][0]
+        match=det1['match_type']
+        outcome_wick=det1['outcome']['by']['wickets']
+        outcome_winner=det1['outcome']['winner']
+        player=det1['player_of_match'][0]
+        playteams=det1['teams']
+        toss=det1['toss']['winner']
+        opt=det1['toss']['decision']
+        umpires=det1['umpires']
+        venue=det1['venue']
+        initial.append(dat1)
+        initial.append(match)
+        final.append(outcome_wick)
+        final.append(outcome_winner)
+        final.append(player)
+        initial.append(playteams)
+        initial.append(toss)
+        initial.append(opt)
+        initial.append(umpires)
+        initial.append(venue)
+        f1=fruits_list['innings'][0]['1st innings']['deliveries'][0][0.1]['batsman']
+        f2=fruits_list['innings'][0]['1st innings']['deliveries'][0][0.1]['non_striker']
+        over=list()
+        a=[]
+        temp=list()
+        for i in fruits_list['innings'][0]['1st innings']['deliveries']:
+            for j in i.keys():
+                temp=list()
+                if((f1!=i[j]['batsman'])and(f1!=i[j]['non_striker'])):
+                    wick=wick+1
+                    f1=i[j]['batsman']
+                elif((f2!=i[j]['batsman'])and(f2!=i[j]['non_striker'])):
+                    wick=wick+1
+                    f2=i[j]['non_striker']
+                k=list()
+                temp.append(i[j]['batsman'])
+                temp.append(i[j]['non_striker'])
+                temp.append(i[j]['runs']['batsman'])
+                temp.append(i[j]['runs']['extras'])
+                temp.append(i[j]['runs']['total'])
+                temp.append(wick)
+                temp.append(j)
+                temp.append(ceil(j))
+            a.append(temp)
+        return render_template("livescores.html")
+
+@app.route("/livescores",methods=["GET"])
+def livescores():
+    global a
+    global count
+    global park
+    global initial
+    global final
+    if(park==0):
+        park=1
+        return jsonify(initial)
+    elif(park==2):
+        return jsonify(final)
+    if(count==len(a)):
+        park=2
+        return jsonify([0,0,0,0,0,0,0,0])
+    b=a[count]
+    count=count+1
+    return jsonify(b)
+
+@app.route('/stat')
+def stat():
+    return render_template('stat.html')
+
+@app.route('/pie')
+def pie():
+    matches = {'pakistan': 36, 'Sri Lanka': 78, 'South Africa': 52, 'Bangladesh': 32, 'West Indies': 66, 'New Zealand': 42, 'Australia': 78, 'England': 69, 'Afghanistan': 4} 
+
+    won = {'pakistan': 24, 'Sri Lanka': 51, 'South Africa': 28, 'Bangladesh': 27, 'West Indies': 44, 'New Zealand': 23, 'Australia': 38, 'England': 39, 'Afghanistan': 4}
+
+    colors = ["#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA", "#ff0000", "#fd3100", "#cde310", "#F0FFFF","#d30121"]
+
+    res = {}
+    res = dict((k, float(won[k]) / matches[k]) for k in won)
+    labels = res.keys()
+    values = res.values()
+    return render_template('pie_chart.html', title='India matches won against other countries',  set=zip(values, labels, colors),set1=zip(matches.values(),labels,colors))
+
+@app.route('/bar')
+def bar():
+    labels = [
+        'V Kohli', 'M S Dhoni', 'R G Sharma', 'A T Rayadu',
+        'S Dhawan'
+    ]
+
+    values = [
+        59.34, 50.38, 49.27, 47.06,
+        45.14
+    ]
+
+    colors = [
+        "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
+        "#ABCDEF"
+    ]
+    bar_labels=labels
+    bar_values=values
+    return render_template('bar_chart.html', title='TOP 5 HIGHEST BATTING IN ONE DAY INTERNATIONAL', max=65, labels=bar_labels, values=bar_values)
+
+@app.route('/line_chart')
+def line():
+    with open('static/data/IndvsPak.yaml') as file:
+    # The FullLoader parameter handles the conversion from YAML
+    # scalar values to Python the dictionary format
+        score_list = yaml.load(file, Loader=yaml.FullLoader)
+        sc=0
+        for i in score_list['innings'][0]['1st innings']['deliveries']:
+            for j in i.keys():
+                sc+=i[j]['runs']['total']
+        print(sc)
+            
+        a={}
+        for i in score_list['innings'][0]['1st innings']['deliveries']:
+            for j in i.keys():
+                if ceil(j/5)*5 in a:
+                    a[ceil(j/5)*5]+=i[j]['runs']['total']
+                else:
+                    a[ceil(j/5)*5]=i[j]['runs']['total']
+        print(a)
+        for i in a:
+            if i-5 not in a:
+                a[i]=a[i]
+            else:
+                a[i]=a[i]+a[i-5]
+        #print(a.keys())
+        #print(a.values())
+        b={}
+        for i in score_list['innings'][1]['2nd innings']['deliveries']:
+            for j in i.keys():
+                if ceil(j/5)*5 in b:
+                    b[ceil(j/5)*5]+=i[j]['runs']['total']
+                else:
+                    b[ceil(j/5)*5]=i[j]['runs']['total']
+        print(b)
+        for i in b:
+            if i-5 not in b:
+                b[i]=b[i]
+            else:
+                b[i]=b[i]+b[i-5]
+    team1=score_list['info']['teams'][0]
+    team2=score_list['info']['teams'][1]
+    info=score_list['info']
+    labels = a.keys()
+    labels1 = b.keys()
+    values = a.values()
+    values1 = b.values()
+    print(labels, values,labels1,values1)
+    return render_template('line3.html', title='Line chart', max=25, set = zip(labels, values), set1 = zip(labels1,values1),
+                            team1=team1,team2=team2,info=info)
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 if __name__=="__main__":
-	app.run(port=5678,debug=True)
+	app.run(port=5679,debug=True)

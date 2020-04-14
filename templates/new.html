@@ -1,4 +1,5 @@
 {% extends 'base.html'%}
+{% block title %}World Cup{% endblock%}
 {% block head %}
   <script type="text/javascript">
       let params = new URLSearchParams(location.search);
@@ -24,6 +25,8 @@ a{text-decoration:none !important}
   {% endblock %}
 {% block body %}
   <div class="container-fluid">
+    <br>
+    <h1 class="text-center">Cricket WorldCup</h1>
     <table class="table borderless">
       <tr>
         <td><div class="card bg-light"><a href="teams/New Zealand" class="card-img-top "><img src="{{url_for('static',filename='media/teams/newzealand.jpg')}}"><div class="card-body">
@@ -40,7 +43,8 @@ a{text-decoration:none !important}
       <tr><td colspan="5"></td></tr>
       <tr><td colspan="5"></td></tr>
       <tr>
-        <td colspan="5" align="center"><a href="/schedule"><img src="{{url_for('static',filename='media/trophy.jpg')}}" width="180px"></a></td>
+
+        <td colspan="5" align="center"><a href="/schedule"><div class="card bg-light"><img src="{{url_for('static',filename='media/1200px-ICC_Cricket_World_Cup_2019_logo.svg.png')}}" width="180px"><div class="card-body"><br></div></a></div>div></td>
       </tr>
       <tr><td colspan="5"></td></tr>
       <tr><td colspan="5"></td></tr>

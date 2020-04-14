@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block title %}Line Chart{% endblock %}
+{% block head %}
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script>
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	theme: "light2",
+	title:{
+		text: "Line Chart"
+	},
+	axisX:{
+		title: "Overs",
+		//valueFormatString: "DD MMM",
+		crosshair: {
+			enabled: true,
+			snapToDataPoint: true
+		}
+	},
+	axisY: {
+		title: "Score",
+		crosshair: {
+			enabled: true
+		}
+	},
+	toolTip:{
+		shared:true
+	},  
+	legend:{
+		cursor:"pointer",
+		verticalAlign: "bottom",
+		horizontalAlign: "left",
+		dockInsidePlotArea: true,
+		itemclick: toogleDataSeries
+	},
+	data: [{
+		type: "line",
+		showInLegend: true,
+		name: "{{team1}}",
+		markerType: "square",
+		//xValueFormatString: "DD MMM, YYYY",
+		color: "#F08080",
+		dataPoints: [
+			{% for item, label in set %}
+			{
+	            	x : {{ item }},
+			y : {{ label }}
+			},
+            		{% endfor %}
+		]
+	},
+	{
+		type: "line",
+		showInLegend: true,
+		name: "{{team2}}",
+		lineDashType: "dash",
+		dataPoints: [
+			{% for item, label in set1 %}
+			{
+	            	x : {{ item }},
+			y : {{ label }}
+			},
+            		{% endfor %}
+			
+		]
+	}]
+});
+chart.render();
+
+function toogleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else{
+		e.dataSeries.visible = true;
+	}
+	//chart.render();
+}
+
+}
+</script>
+{% endblock%}
+{% block body %}
+<br><br><br>
+<div class="container">
+	<br>
+	<h2 class="text-center">{{team1}} vs {{team2}}</h2>
+	<h3 class="text-center">{{info['dates'][0]}}</h3>
+	<h4 class="text-center">{{info['venue']}},{{info['city']}}</h4>
+	<h5 class="text-center">{{info['outcome']['winner']}} won by {%if info['outcome']['runs']%}{{info['outcome']['by']['runs']}} runs{% else %}{{info['outcome']['by']['wickets']}} wickets{% endif %}
+	<br><br>
+<div id="chartContainer"></div>
+</div>
+{% endblock %}

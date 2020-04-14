@@ -1,6 +1,3 @@
-# WorldCup-WT-Project
-WT2 Project 2020
-
 To Run:
   1.Start environment
   2.Run: python3 views.py
@@ -25,3 +22,14 @@ Implemented:
   2.Ajax xhr get, post
   3.Multistage downloading
 
+
+To use database in views.py
+  conn = sqlite3.connect('cricket.db')
+  c=conn.cursor()
+  c.execute(sql query)
+
+  if read:
+          c=list(c)
+          print(c)  print once see the format in the terminal act according to it
+  elif write:
+          conn.commit()

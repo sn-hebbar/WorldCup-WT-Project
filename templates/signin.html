@@ -14,6 +14,7 @@
 {% endblock %}
 {% block body %}
 <div class="container">
+  <br>
   <h2>Signin</h2>
   <h3 style="color:red;">{{data}}</h3>
     <form action="/signin" method="post">
@@ -22,6 +23,8 @@
       <input type="submit" class="btn btn-primary" value="Signin">
       <br><br>
     </form>
+    <a href="/signup" class="btn btn-primary">Signup</a>
+    <br><br>
 </div>
 
 {% endblock %}

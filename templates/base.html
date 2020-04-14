@@ -5,7 +5,7 @@
     <title>{%block title%}{%endblock%}</title>
     <script type="text/javascript" src="{{url_for('static',filename='js/angular.min.js')}}"></script>
     <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href='{{url_for('static',filename='css/back.css')}}'>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/back.css')}}">
     <script type="text/javascript" src="{{url_for('static',filename='js/angular-sanitize.js')}}">
 
     </script>
@@ -28,6 +28,9 @@
       <a href="/signin" class="hover side_button" ng-if="!sesEmail">Login</a>
       <a href="/signup" class="hover side_button" ng-if="!sesEmail">Sign up</a>
       <a href="/dashboard" class="hover side_button" ng-if="sesEmail">Dashboard</a>
+      <a href="/stat" class="hover side_button">Stat</a>
+      <a href="/live" class="hover side_button">Live</a>
+      <a href="/about" class="hover side_button">About</a>
       <div class="social">
       Follow us on:<br>
       <a href=""><img src="{{url_for('static',filename='media/facebook(1).png')}}" alt="facebook" class="facebook"></a>
