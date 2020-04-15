@@ -19,4 +19,7 @@ WT2 Project 2020
   ######   5. Dynamic graph plots for data analysis
   ######   6. User authentication using sessions
 
-
+#### By,
+##### Shankaranarayana Hebbar H S
+##### Manojkumar S
+##### Siva Teja S
