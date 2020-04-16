@@ -13,14 +13,14 @@
       border-radius: 15px;
   background: #FFFFFF;
   padding: 10px; 
-  width: 450px;
+  width: 400px;
   height: 50px; 
 }
 .div3 {
       border-radius: 15px;
   background: #FFFFFF;
   padding: 10px; 
-  width: 450px;
+  width: 400px;
   height: 50px; 
 }
 .div2 {
@@ -68,7 +68,7 @@
           $timeout(call,5000)
         }
   },function(response){
-    $timeout(call,5000)
+  	$timeout(call,5000)
   })}
     function finale(){
       $http.get('/livescoresfinal').then(function(response){
@@ -107,9 +107,6 @@
       </div>
       <div class="card text-white bg-dark mb-3" style="max-width: 100rem;text-align: center;position: relative;left: 50px;width: 300px;padding: 10px;">
         <h1>Overs : {{disp[6]}}</h1>
-      </div>
-      <div class="card text-white bg-dark mb-3" style="max-width: 100rem;text-align: center;position: relative;left: 50px;width: 600px;padding: 10px;">
-        <h1>{{disp[8]}}</h1>
       </div>
       <div class="card text-white bg-dark mb-3" style="max-width: 80rem;position: relative;left: 50px;">
         <table class="table table-dark">

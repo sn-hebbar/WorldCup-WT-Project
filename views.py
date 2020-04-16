@@ -7,9 +7,13 @@ import yaml
 import glob
 from math import ceil,floor
 import pprint
+import time 
+
 app=Flask(__name__)
 app.secret_key = "abc"
 conn = sqlite3.connect('cricket.db')
+start=0
+now=0
 count=0
 a=list()
 initial=list()
@@ -202,7 +206,10 @@ def live():
     global initial
     global final
     global a
-    with open('static/data/1001349.yaml') as file:
+    global start
+    global now
+    tot=0
+    with open('static/data/IndvsAus2020.yaml') as file:
     # The FullLoader parameter handles the conversion from YAML
     # scalar values to Python the dictionary format
         fruits_list = yaml.load(file, Loader=yaml.FullLoader)
@@ -217,16 +224,15 @@ def live():
         opt=det1['toss']['decision']
         umpires=det1['umpires']
         venue=det1['venue']
-        initial.append(dat1)
-        initial.append(match)
-        final.append(outcome_wick)
-        final.append(outcome_winner)
-        final.append(player)
-        initial.append(playteams)
-        initial.append(toss)
-        initial.append(opt)
-        initial.append(umpires)
-        initial.append(venue)
+        initial.append(dat1)#0
+        initial.append(match)#1
+        final.append(outcome_winner+" won by "+str(outcome_wick)+" wickets ")
+        final.append("Man of the match : "+player)
+        initial.append(playteams)#2
+        initial.append(toss)#3
+        initial.append(opt)#4
+        initial.append(umpires)#5
+        initial.append(venue)#6
         f1=fruits_list['innings'][0]['1st innings']['deliveries'][0][0.1]['batsman']
         f2=fruits_list['innings'][0]['1st innings']['deliveries'][0][0.1]['non_striker']
         over=list()
@@ -246,10 +252,38 @@ def live():
                 temp.append(i[j]['non_striker'])
                 temp.append(i[j]['runs']['batsman'])
                 temp.append(i[j]['runs']['extras'])
-                temp.append(i[j]['runs']['total'])
+                temp.append(tot+i[j]['runs']['total'])
+                tot=tot+i[j]['runs']['total']
                 temp.append(wick)
                 temp.append(j)
                 temp.append(ceil(j))
+                temp.append("1st innings")
+            a.append(temp)
+        a.append([0,0,0,0,tot,wick,19.6,20.0,'1st innings over !!!'])
+        tot=0
+        wick=0
+        f1=fruits_list['innings'][1]['2nd innings']['deliveries'][0][0.1]['batsman']
+        f2=fruits_list['innings'][1]['2nd innings']['deliveries'][0][0.1]['non_striker']
+        for i in fruits_list['innings'][1]['2nd innings']['deliveries']:
+            for j in i.keys():
+                temp=list()
+                if((f1!=i[j]['batsman'])and(f1!=i[j]['non_striker'])):
+                    wick=wick+1
+                    f1=i[j]['batsman']
+                elif((f2!=i[j]['batsman'])and(f2!=i[j]['non_striker'])):
+                    wick=wick+1
+                    f2=i[j]['non_striker']
+                k=list()
+                temp.append(i[j]['batsman'])
+                temp.append(i[j]['non_striker'])
+                temp.append(i[j]['runs']['batsman'])
+                temp.append(i[j]['runs']['extras'])
+                temp.append(tot+i[j]['runs']['total'])
+                tot=tot+i[j]['runs']['total']
+                temp.append(wick)
+                temp.append(j)
+                temp.append(ceil(j))
+                temp.append('2nd innings')
             a.append(temp)
         return render_template("livescores.html")
 
@@ -257,20 +291,29 @@ def live():
 def livescores():
     global a
     global count
-    global park
-    global initial
-    global final
-    if(park==0):
-        park=1
-        return jsonify(initial)
-    elif(park==2):
-        return jsonify(final)
-    if(count==len(a)):
-        park=2
-        return jsonify([0,0,0,0,0,0,0,0])
+    global start
+    global now
+    now=time.time()
+    diff=int((now-start)/5)
+    start=now
+    if(diff>1):
+        count=count+diff
+    if(count>=len(a)):
+        return jsonify(['-','-',0,0,0,0,0,0,"2nd innings over!!!"])
     b=a[count]
     count=count+1
+    start=time.time()
     return jsonify(b)
+
+@app.route("/livescoresinitial",methods=["GET"])
+def livescoresinitial():
+    global initial
+    return jsonify(initial)
+
+@app.route("/livescoresfinal",methods=["GET"])
+def livescoresfinal():
+    global final
+    return jsonify(final)
 
 @app.route('/stat')
 def stat():
@@ -312,7 +355,7 @@ def bar():
 
 @app.route('/line_chart')
 def line():
-    with open('static/data/IndvsPak.yaml') as file:
+    with open('static/data/IndvsAus2020.yaml') as file:
     # The FullLoader parameter handles the conversion from YAML
     # scalar values to Python the dictionary format
         score_list = yaml.load(file, Loader=yaml.FullLoader)
@@ -350,8 +393,8 @@ def line():
                 b[i]=b[i]
             else:
                 b[i]=b[i]+b[i-5]
-    team1=score_list['info']['teams'][0]
-    team2=score_list['info']['teams'][1]
+    team1=score_list['innings'][0]['1st innings']['team']
+    team2=score_list['innings'][1]['2nd innings']['team']
     info=score_list['info']
     labels = a.keys()
     labels1 = b.keys()
@@ -366,4 +409,5 @@ def about():
     return render_template('about.html')
 
 if __name__=="__main__":
-	app.run(port=5679,debug=True)
+    start=time.time()
+    app.run(port=5679,debug=True)
